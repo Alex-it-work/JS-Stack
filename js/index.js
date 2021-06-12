@@ -55,14 +55,7 @@ class Stack {
 }
 
 const palindrome = "Манил, а глаза лгали нам...";
-
-try {
-  console.log(`${palindrome} палиндром? - ${checkPalindrome(palindrome)}`);
-} catch (error) {
-  if (error instanceof TypeError) {
-    console.log("Input a string pls");
-  }
-}
+console.log(`${palindrome} - палиндром? - ${checkPalindrome(palindrome)}`);
 
 /**
  *
@@ -70,21 +63,27 @@ try {
  * @returns {Boolean}
  */
 function checkPalindrome(str) {
-  if (typeof str !== "string") {
-    throw new TypeError("palindrome must be a string");
-  }
-  const preparedStr = deleteSignsSpacesUpperCase(str);
+  const preparedStr = deleteSignsSpacesUpperCases(str);
+  console.log(preparedStr);
   const palindromeStack = new Stack();
 
-  for (let i = 0; i < preparedStr.length; i++) {
-    if (i < Math.round(preparedStr.length / 2)) {
-      palindromeStack.push(preparedStr[i]);
-      continue;
-    }
+  for (let i = 0; i < preparedStr.length / 2; i++) {
+    palindromeStack.push(preparedStr[i]);
+  }
+
+  if (preparedStr.length % 2 !== 0) {
     palindromeStack.pop();
+  }
+
+  for (
+    let i = Math.round(preparedStr.length / 2);
+    i < preparedStr.length;
+    i++
+  ) {
     if (preparedStr[i] !== palindromeStack.peek) {
       return false;
     }
+    palindromeStack.pop();
   }
   return true;
 }
@@ -94,8 +93,8 @@ function checkPalindrome(str) {
  * @param {String} str
  * @returns {String}
  */
-function deleteSignsSpacesUpperCase(str) {
-  return str.replace(/[^a-zа-яё]/gi, "").toLowerCase();
+function deleteSignsSpacesUpperCases(str) {
+  return str.replace(/[^a-zа-яё0-9]/gi, "").toLowerCase();
 }
 
 // альтернативное решение
